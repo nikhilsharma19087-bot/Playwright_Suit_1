@@ -1,18 +1,32 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('homepage should load correctly', async ({ page }) => {
+  await page.goto('https://example.com');
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+  // Check title
+  await expect(page).toHaveTitle(/Example/);
 });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('should navigate to more information page', async ({ page }) => {
+  await page.goto('https://example.com');
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+  // Click link
+  await page.click('text=More information');
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+  // Verify URL changed
+  await expect(page).to.HaveURL(/iana.org/);
+});
+
+test('invalid login shows error', async ({ page }) => {
+  await page.goto('https://practicetestautomation.com/practice-test-login/');
+
+  await page.fill('#username', 'wronguser');
+  await page.fill('#password', 'wrongpass');
+  await page.click('#submit');
+
+  await expect(page.locator('#error')).toBeVisible();
+});
+
+test('simple check', async ({ page }) => {
+  await page.goto('https://example.com');
 });
